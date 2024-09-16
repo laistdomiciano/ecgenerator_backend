@@ -33,6 +33,7 @@ def login():
         access_token = create_access_token(identity=user.id)
 
         user_data = {
+            'id': user.id,
             'username': user.username
         }
 

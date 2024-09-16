@@ -4,7 +4,7 @@ info:
   description: API to manage users, employees, contracts, etc.
   version: 1.0.0
 servers:
-  - url: http://localhost:5002
+  - url: https://ecgenerator-backend.onrender.com
     description: Local development server
 components:
   securitySchemes:
