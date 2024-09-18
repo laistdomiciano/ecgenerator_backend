@@ -73,6 +73,13 @@ class ContractType(db.Model):
     # Relationship to FinalContract, using backref for reverse access
     final_contracts = db.relationship("FinalContract", backref="contract_type", lazy=True)
 
+    def to_json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'template': self.template
+        }
+
 
 class FinalContract(db.Model):
     id = db.Column(db.Integer, primary_key=True)

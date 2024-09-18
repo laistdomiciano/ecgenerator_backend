@@ -147,20 +147,34 @@ def update_user(user_id):
     return jsonify({'message': 'User updated successfully.'})
 
 
-@routes.route('/get_contract_type/<int:contract_id>', methods=['GET'])
+@routes.route('/get_contract_types', methods=['GET'])
 @jwt_required()
-def get_contract_type(contract_id):
-    contract_type = ContractType.query.get(contract_id)
+def get_contract_types():
+    contract_type = ContractType.query.all()
     if not contract_type:
         return jsonify({'error': 'Contract type not found.'}), 404
 
-    contract_type_data = {
-        'id': contract_type.id,
-        'name': contract_type.name,
-        'template': contract_type.template
-    }
+    contracts_list = []
+    for contract in contract_type:
+        contracts_list.append(contract.to_json())
 
-    return jsonify({'contract_type': contract_type_data}), 200
+    return jsonify(contracts_list), 200
+
+
+# @routes.route('/get_contract_type/<int:contract_id>', methods=['GET'])
+# @jwt_required()
+# def get_contract_type(contract_id):
+#     contract_type = ContractType.query.get(contract_id)
+#     if not contract_type:
+#         return jsonify({'error': 'Contract type not found.'}), 404
+#
+#     contract_type_data = {
+#         'id': contract_type.id,
+#         'name': contract_type.name,
+#         'template': contract_type.template
+#     }
+#
+#     return jsonify({'contract_type': contract_type_data}), 200
 
 
 @routes.route('/employees_wo_contract', methods=['GET'])
