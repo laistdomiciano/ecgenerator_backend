@@ -202,7 +202,6 @@ def create_contract(contract_type_id, employee_id):
     employee = Employee.query.get(employee_id)
     if not employee:
         return jsonify({'error': 'Invalid employee ID.'}), 404
-    print(employee.employee_name)
 
     try:
         formatted_content = contract_type.template \
@@ -234,9 +233,9 @@ def create_contract(contract_type_id, employee_id):
     # Upload PDF to S3
     s3_url = upload_to_s3(pdf_path, pdf_filename)
 
-    # Create the contract object, now with the user_id
+    # Create the contract object in the database
     new_contract = FinalContract(
-        user_id=user_id,  # Pass the user_id here
+        user_id=user_id,
         employee_id=employee.id,
         contract_type_id=contract_type.id,
         content=s3_url
@@ -249,8 +248,10 @@ def create_contract(contract_type_id, employee_id):
     # Cleanup temporary file
     os.remove(pdf_path)
 
+    # Redirect user to the S3 URL where they can download the file
     return jsonify(
-        {'message': 'Contract created successfully.', 'contract_id': new_contract.id, 'pdf_url': s3_url}), 201
+        {'message': 'Contract created successfully.', 'contract_id': new_contract.id, 'pdf_url': s3_url}
+    ), 201
 
 
 @routes.route('/update_employee/<int:user_id>', methods=['PUT'])

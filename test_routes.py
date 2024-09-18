@@ -75,23 +75,33 @@ def test_update_user(client):
     assert response.status_code == 200
 
 
-def test_get_contract_type(client):
+def test_get_contract_types(client):
     login_data = login_user(client)
     response_dict = json.loads(login_data.text)
     token = response_dict.get('token')
 
     headers = {"Authorization": f"Bearer {token}"}
 
-    response = client.get('/get_contract_type/1', content_type='application/json', headers=headers)
+    response = client.get('/get_contract_types', content_type='application/json', headers=headers)
 
     assert response.status_code == 200
+
+# def test_get_contract_type(client):
+#     login_data = login_user(client)
+#     response_dict = json.loads(login_data.text)
+#     token = response_dict.get('token')
+#
+#     headers = {"Authorization": f"Bearer {token}"}
+#
+#     response = client.get('/get_contract_type/1', content_type='application/json', headers=headers)
+#
+#     assert response.status_code == 200
 
 
 def test_employees_wo_contract(client):
     login_data = login_user(client)
     response_dict = json.loads(login_data.text)
     token = response_dict.get('token')
-    print(token)
 
     headers = {"Authorization": f"Bearer {token}"}
 
